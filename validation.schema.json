@@ -1,0 +1,211 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "title": "Whoa, whaaaa?",
+      "description": "A name of this validation schema.",
+      "default": "Default goes here"
+    },
+    "description": {
+      "type": "string",
+      "description": "Describes the purpose of the data represented by this validation schema."
+    },
+    "source": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "$ref": "#/$defs/string"
+        },
+        "type": {
+          "$ref": "#/$defs/nullableOfSourceType"
+        },
+        "contact": {
+          "$ref": "#/$defs/contact"
+        }
+      },
+      "required": [
+        "name",
+        "type"
+      ],
+      "description": "Specify the data source.",
+      "default": "Default goes here"
+    },
+    "audience": {
+      "type": "object",
+      "properties": {
+        "Primary": {
+          "type": "string"
+        },
+        "Secondary": {
+          "type": "string"
+        }
+      },
+      "description": "Name the internal interested parties who should be notified upon file validation issues(s)."
+    },
+    "schema": {
+      "type": "object",
+      "properties": {
+        "File": {
+          "$ref": "#/$defs/file"
+        },
+        "fields": {
+          "$ref": "#/$defs/iListOfIFieldIdentifier"
+        }
+      },
+      "description": "The schema definition for the file to be validated."
+    }
+  },
+  "required": [
+    "name",
+    "source",
+    "schema"
+  ],
+  "$defs": {
+    "string": {
+      "type": "string",
+      "description": "The data source reprsented by this schema. Usually a client or vendor name."
+    },
+    "nullableOfSourceType": {
+      "enum": [
+        "Client",
+        "Vendor",
+        "Other"
+      ],
+      "description": "The source type for this data. Client, Vendor or Other."
+    },
+    "contact": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "$ref": "#/$defs/string1"
+        },
+        "email": {
+          "$ref": "#/$defs/string2"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "description": "A primary contact for questions about this data. Usually a technical contact"
+    },
+    "string1": {
+      "type": "string",
+      "description": "The contact name."
+    },
+    "string2": {
+      "type": "string",
+      "description": "The contact email address."
+    },
+    "file": {
+      "type": "object",
+      "properties": {
+        "Format": {
+          "type": "string"
+        },
+        "Dialect": {
+          "type": "object",
+          "properties": {
+            "Delimiter": {
+              "type": "object"
+            },
+            "Header": {
+              "type": "boolean"
+            },
+            "AllowComments": {
+              "type": "boolean"
+            },
+            "CommentQualifier": {
+              "type": "string"
+            }
+          }
+        },
+        "Pattern": {
+          "type": "string"
+        }
+      }
+    },
+    "iListOfIFieldIdentifier": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "Field": {
+            "type": "object",
+            "properties": {
+              "Description": {
+                "type": "string"
+              },
+              "Type": {
+                "enum": [
+                  "Undefined",
+                  "String",
+                  "Integer",
+                  "Decimal",
+                  "Currency",
+                  "Date",
+                  "Time",
+                  "DateTime",
+                  "Boolean",
+                  "Nullable",
+                  "NullableString",
+                  "NullableInteger",
+                  "NullableDecimal",
+                  "NullableCurrency",
+                  "NullableDate",
+                  "NullableTime",
+                  "NullableDateTime",
+                  "NullableBoolean"
+                ]
+              },
+              "Format": {
+                "type": "string"
+              },
+              "Constraints": {
+                "type": "object",
+                "properties": {
+                  "required": {
+                    "type": "boolean",
+                    "title": "Required",
+                    "description": "Specifies that the filed requires a non-null, empty or whitespace value.",
+                    "default": "false"
+                  },
+                  "unique": {
+                    "type": "boolean",
+                    "title": "Unique",
+                    "description": "Specifies that the filed value must be unique within the file.",
+                    "default": "false"
+                  },
+                  "minimum": {
+                    "type": "integer",
+                    "title": "Minimum",
+                    "description": "Specifies a minimum value for a field. This is different to minLength which checks the number of items in the value. A minimum value constraint checks whether a field value is greater than or equal to the specified value. The range checking depends on the type of the field. E.g. an integer field may have a minimum value of 100; a date field might have a minimum date. If a minimum value constraint is specified then the field descriptor MUST contain a type key."
+                  },
+                  "Maximum": {
+                    "type": "integer"
+                  },
+                  "MinLength": {
+                    "type": "integer"
+                  },
+                  "MaxLength": {
+                    "type": "integer"
+                  },
+                  "Pattern": {
+                    "type": "string"
+                  },
+                  "Enum": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
